@@ -1,0 +1,10 @@
+---
+title: "A tutorial introduction to graphical models"
+author: "Darren Wilkinson"
+date: "darrenjw.github.io"
+output:
+  beamer_presentation:
+    slide_level: 2
+    theme: "metropolis"
+---
+
