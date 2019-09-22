@@ -1,13 +1,14 @@
-# Some elementary probability
+# Introduction
 
-## Events and probabilities
+## Read paper
 
-An event, $E$, may turn out to be true or false. We write $P(E)$ for the probability that $E$ will turn out to be true. $\bar E$ is the event that $E$ is false. We require $P(E)+P(\bar E)=1$.
+## Related papers
 
-For events $E$ and $F$ we write $E \cap F$ for the event that both $E$ and $F$ are true, and $E \cup F$ for the event that at least one of $E$ and $F$ is true.
+## Bias in MCMC
 
-If $E$ and $F$ are *disjoint*, we have that $P(E \cap F)=0$ and $P(E \cup F) = P(E) + P(F)$.
+# Coupling Markov chains
 
-In general, we have
-$$P(E \cup F) = P(E) + P(F) - P(E\cap F).$$
+# Debiasing MCMC
+
+# Maximal coupling
 
