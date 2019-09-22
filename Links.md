@@ -2,9 +2,16 @@
 
 ## Papers
 
+### Jacob and co-authors
+
 * Unbiased MCMC with couplings: https://arxiv.org/abs/1708.03625
 * Unbiased HMC with couplings: https://arxiv.org/abs/1709.00404
 * Smoothing PFs with couplings: https://arxiv.org/abs/1701.02002
+* Unbiased Markov chain Monte Carlo for intractable target distributions: https://arxiv.org/abs/1807.08691
+* Unbiased estimation of log normalizing constants with applications to Bayesian cross-validation: https://arxiv.org/abs/1810.01382
+* Unbiased Smoothing using Particle Independent Metropolis-Hastings: https://arxiv.org/abs/1902.01781
+
+### Foundational ideas
 
 * Glynn and Rhee: https://arxiv.org/abs/1409.4302
 * McLeish: https://arxiv.org/abs/1005.2228
