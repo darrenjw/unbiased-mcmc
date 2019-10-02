@@ -2,13 +2,41 @@
 
 ## Read paper
 
+## The problem
+
 ## Related papers
 
 ## Bias in MCMC
 
+
+
 # Coupling Markov chains
+
+## The coupling idea
+
+## Coupling Metropolis independence samplers
+
+
 
 # Debiasing MCMC
 
+## An unbiased estimate via coupled chains
+
+## Coupling with an offset
+
+## Time-averaged estimator
+
+## Parallel chains
+
+
+
 # Maximal coupling
+
+## Coupling of two densities
+
+## Coupling of MH kernels
+
+## Coupling Gibbs samplers
+
+## Reflection maximal coupling
 
