@@ -11,7 +11,7 @@
 * Unbiased estimation of log normalizing constants: https://arxiv.org/abs/1810.01382
 * Unbiased Smoothing using PIMH: https://arxiv.org/abs/1902.01781
 
-### Foundational ideas
+### Related ideas
 
 * Glynn and Rhee: https://arxiv.org/abs/1409.4302
 * McLeish: https://arxiv.org/abs/1005.2228
@@ -23,9 +23,10 @@
 ### [Statisfaction](https://statisfaction.wordpress.com/)
 
 * https://statisfaction.wordpress.com/2017/08/14/unbiased-mcmc-with-couplings/
+* https://statisfaction.wordpress.com/2017/09/06/sampling-from-a-maximal-coupling/
 * https://statisfaction.wordpress.com/2017/09/17/unbiased-hamiltonian-monte-carlo-with-couplings/
 * https://statisfaction.wordpress.com/2017/10/01/approximating-the-cut-distribution/
-* https://statisfaction.wordpress.com/2017/09/06/sampling-from-a-maximal-coupling/
+* https://statisfaction.wordpress.com/2019/09/28/coding-algorithms-in-r-for-models-written-in-stan/
 
 ### Other blog posts
 
