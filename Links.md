@@ -16,10 +16,11 @@
 * Glynn and Rhee: https://arxiv.org/abs/1409.4302
 * McLeish: https://arxiv.org/abs/1005.2228
 * Johnson: https://dx.doi.org/10.1080/01621459.1998.10474105
+* Bou-Rabee et al.: https://arxiv.org/abs/1805.00452v2
 
 ## Blog posts:
 
-### Statisfaction
+### [Statisfaction](https://statisfaction.wordpress.com/)
 
 * https://statisfaction.wordpress.com/2017/08/14/unbiased-mcmc-with-couplings/
 * https://statisfaction.wordpress.com/2017/09/17/unbiased-hamiltonian-monte-carlo-with-couplings/
