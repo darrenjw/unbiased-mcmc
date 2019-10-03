@@ -2,9 +2,26 @@
 
 ## Read paper
 
+![Upcoming RSS B Read paper](figs/unbiased.png)
+
+https://arxiv.org/abs/1708.03625
+
 ## The problem
 
-## Related papers
+* MCMC is widely used in Bayesian computation for generating samples from a posterior distribution
+* Since in general we cannot initialise a chain with an exact sample from the target, we rely on asymptotic convergence of the chain to equilibrium, but diagnosing "burn in" and "convergence" is difficult
+* The method outlined in the read paper does not solve the "exact sampling" problem, but instead provides a method for removing the bias from any estimates that are produced from the algorithm output, using a pair of coupled chains
+* The approach is quite general, and can potentially be applied to many different kinds of MCMC algorithms: Gibbs samplers, Metropolis-Hastings, MALA, HMC, PMCMC, ...
+* The read paper concentrates on MH and Gibbs sampling, but there are a bunch of related papers...
+
+## Some related papers
+
+* **Smoothing PFs with couplings**: https://arxiv.org/abs/1701.02002
+* **Unbiased HMC with couplings**: https://arxiv.org/abs/1709.00404
+* **Unbiased MCMC for intractable targets**: https://arxiv.org/abs/1807.08691
+* **Unbiased estimation of log normalizing constants**: https://arxiv.org/abs/1810.01382
+* **Unbiased Smoothing using PIMH**: https://arxiv.org/abs/1902.01781
+* **Coupling and convergence for HMC**: https://arxiv.org/abs/1805.00452v2
 
 ## Bias in MCMC
 
