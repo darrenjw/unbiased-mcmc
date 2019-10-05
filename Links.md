@@ -39,4 +39,4 @@
 
 * https://github.com/pierrejacob/debiasedmcmc
 * https://sites.google.com/site/pierrejacob/
-
+* https://github.com/ColCarroll/couplings
