@@ -10,6 +10,7 @@
 * Unbiased MCMC for intractable targets: https://arxiv.org/abs/1807.08691
 * Unbiased estimation of log normalizing constants: https://arxiv.org/abs/1810.01382
 * Unbiased Smoothing using PIMH: https://arxiv.org/abs/1902.01781
+* Estimating Convergence of Markov Chains with L-Lag Couplings: http://arxiv.org/abs/1905.09971
 
 ### Related ideas
 
