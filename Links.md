@@ -17,16 +17,18 @@
 * McLeish: https://arxiv.org/abs/1005.2228
 * Johnson: https://dx.doi.org/10.1080/01621459.1998.10474105
 * Bou-Rabee et al.: https://arxiv.org/abs/1805.00452v2
+* Agapiou et al.: https://arxiv.org/abs/1411.7713
 
 ## Blog posts:
 
-### [Statisfaction](https://statisfaction.wordpress.com/)
+### [Statisfaction](https://statisfaction.wordpress.com/) (Jacob's blog)
 
 * https://statisfaction.wordpress.com/2017/08/14/unbiased-mcmc-with-couplings/
 * https://statisfaction.wordpress.com/2017/09/06/sampling-from-a-maximal-coupling/
 * https://statisfaction.wordpress.com/2017/09/17/unbiased-hamiltonian-monte-carlo-with-couplings/
 * https://statisfaction.wordpress.com/2017/10/01/approximating-the-cut-distribution/
 * https://statisfaction.wordpress.com/2019/09/28/coding-algorithms-in-r-for-models-written-in-stan/
+* https://statisfaction.wordpress.com/2019/10/05/jrss-series-b-read-paper-and-comparison-with-other-unbiased-estimators/
 
 ### Other blog posts
 
