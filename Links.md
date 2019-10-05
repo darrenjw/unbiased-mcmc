@@ -37,6 +37,6 @@
 
 ## Code:
 
-* https://github.com/pierrejacob/debiasedmcmc
+* https://github.com/pierrejacob/unbiasedmcmc
 * https://sites.google.com/site/pierrejacob/
 * https://github.com/ColCarroll/couplings
