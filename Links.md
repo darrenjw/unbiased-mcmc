@@ -13,11 +13,11 @@
 
 ### Related ideas
 
-* Glynn and Rhee: https://arxiv.org/abs/1409.4302
-* McLeish: https://arxiv.org/abs/1005.2228
 * Johnson: https://dx.doi.org/10.1080/01621459.1998.10474105
-* Bou-Rabee et al.: https://arxiv.org/abs/1805.00452v2
+* McLeish: https://arxiv.org/abs/1005.2228
+* Glynn and Rhee: https://arxiv.org/abs/1409.4302
 * Agapiou et al.: https://arxiv.org/abs/1411.7713
+* Bou-Rabee et al.: https://arxiv.org/abs/1805.00452v2
 
 ## Blog posts:
 
