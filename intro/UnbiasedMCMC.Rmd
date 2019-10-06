@@ -90,6 +90,44 @@ for (i in 2:n) {
 plot(ts(xm), plot.type="single", col=c(2,3), lwd=3)
 ```
 
+## Coupled Metropolis Independence Sampler
+
+```{r}
+cmis = function(n, rpi0, dpi, rq, dq) {
+    xm = matrix(0, nrow=n, ncol=2)
+    x = c(rpi0(), rpi0())
+    xm[1, ] = x
+    for (i in 2:n) {
+        xs = rq()
+        u = runif(1)
+        a = dpi(xs)*dq(x)/(dpi(x)*dq(xs))
+        x[u < a] = xs
+        xm[i, ] = x
+    }
+    xm
+}
+```
+
+## Example - normal target with Cauchy proposals
+
+```{r}
+set.seed(4)
+out = cmis(
+    40,
+    function() rcauchy(1),
+    function(x) dnorm(x,0,0.5),
+    function() rcauchy(1),
+    function(x) dcauchy(x)
+	)
+```
+
+## Chains
+
+```{r}
+plot(ts(out), plot.type="single", col=c(2,3), lwd=3)
+```
+
+
 # Debiasing MCMC
 
 ## An unbiased estimate via coupled chains
@@ -100,12 +138,84 @@ E_\pi[h(X)] = \lim_{n\rightarrow\infty} E[h(X_n)]
 $$
 * But by telescoping we have
 $$
-E[h(X_n)] = E[h(X_0)] + \sum_{i=1}^n E[h(X_i) - h(X_{i-1})]
+E[h(X_n)] = E[h(X_0)] + \sum_{t=1}^n \left\{E[h(X_t)] - E[h(X_{t-1})]\right\}
 $$
+* Now if $\{X_t\}$ and $\{Y_t\}$ are a pair of (coupled) chains with the same marginals, we have
+$$
+E[h(X_n)] = E[h(X_0)] + \sum_{t=1}^n \left\{E[h(X_t)] - E[h(Y_{t-1})]\right\}
+$$
+
+## An unbiased estimate via coupled chains
+
+But then
+$$
+E_\pi[h(X)] = E[h(X_0)] + \sum_{t=1}^\infty \left\{E[h(X_t)] - E[h(Y_{t-1})]\right\}
+$$
+and so
+$$
+E_\pi[h(X)] = E\left[ h(X_0) + \sum_{t=1}^\infty \left\{h(X_t) - h(Y_{t-1})\right\}\right].
+$$
+In other words,
+$$
+ h(X_0) + \sum_{t=1}^\infty \left\{h(X_t) - h(Y_{t-1})\right\}
+$$
+is an unbiased estimate of $E_\pi[h(X)]$
+
+## An unbiased estimate via coupled chains
+
+* Now if $\{X_t\}$ and $\{Y_t\}$ are faithfully coupled *with an offset of 1*, and coupling time $\tau$, then only finitely many terms of the sum will be non-zero. So,
+$$
+ h(X_0) + \sum_{t=1}^\tau \left\{h(X_t) - h(Y_{t-1})\right\}
+$$
+will be an (exact) unbiased estimate of $E_\pi[h(X)]$ computable in finite time.
+* This is the essence of the debiasing strategy, but this estimate will typically be of high variance, and to implement it we need to be able to couple chains with an offset (of 1)
 
 ## Coupling with an offset
 
+
+
+## Example: Metropolis independence sampler
+
+```{r}
+cmis1 = function(n, rpi0, dpi, rq, dq) {
+    xm = matrix(NA, nrow=n+1, ncol=2)
+    x = c(rpi0(), rpi0()); xm[1, ] = x
+    xs = rq(); u = runif(1)
+    a = dpi(xs)*dq(x[1])/(dpi(x[1])*dq(xs))
+    if (u < a) x[1] = xs
+    xm[2,1] = x[1]
+    for (i in 2:n) {
+        xs = rq(); u = runif(1)
+        a = dpi(xs)*dq(x)/(dpi(x)*dq(xs))
+        x[u < a] = xs
+        xm[i+1, 1] = x[1]; xm[i, 2] = x[2]
+    }
+    xm
+}
+```
+
+## Example: normal target with Cauchy proposals
+
+```{r}
+set.seed(4)
+out = cmis1(
+    40,
+    function() rcauchy(1),
+    function(x) dnorm(x,0,0.5),
+    function() rcauchy(1),
+    function(x) dcauchy(x)
+)
+```
+
+## Chains
+
+```{r}
+plot(ts(out), plot.type="single", col=c(2,3), lwd=3)
+```
+
 ## Time-averaged estimator
+
+## Example: Metropolis independence sampler
 
 ## Parallel chains
 

@@ -28,7 +28,7 @@ $(FILE)-doc.Rmd: $(FILE).Rmd doc.yaml
 	cat doc.yaml $(FILE).Rmd > $(FILE)-doc.Rmd
 
 edit:
-	emacs Makefile Readme.md *.yaml $(FILE).Rmd &
+	emacs Makefile Readme.md test-code.R *.yaml $(FILE).Rmd &
 
 view: $(FILE)-slides.pdf
 	evince $(FILE)-slides.pdf &
