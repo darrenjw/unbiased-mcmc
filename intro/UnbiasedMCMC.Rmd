@@ -26,7 +26,7 @@ https://arxiv.org/abs/1708.03625
 ## Bias in MCMC
 
 * We generate a sequence of values $\{X_i|i=0,2,\ldots\}$ from a Markov chain with transition kernel $p(x,x^\star)$ and target equilibrium $\pi(x)$ by first initialising with $X_0 \sim \pi_0(x)$ for some tractable $\pi_0(x)$
-* For any functional $h(\cdot)$ of interest, we can estimate $E_\pi[h(X)]$ with the Monte carlo estimate
+* For any functional $h(\cdot)$ of interest, we can estimate $E_\pi[h(X)]$ with the Monte Carlo estimate
 $$
 E_\pi[h(X)] = \int_\mathcal{X} h(x)\pi(x)\,dx \simeq \frac{1}{n} \sum_{i=1}^n h(X_i)
 $$
@@ -50,7 +50,7 @@ $$
 * The debiasing idea relies on the notion of *coupled* Markov chains
 * A pair of coupled chains, $\{(X^{(1)}_t,X^{(2)}_t)|t=1,2,\ldots\}$ each behave *marginally* as if they have initial distribution $\pi_0(x)$ and transition kernel $p(x,x^\star)$
 * However, if they are (non-trivially) *coupled*, the two chains are not independent
-* Typically the joint transition kernel is chosen so that the chains are encouraged to *coalese*
+* Typically the joint transition kernel is chosen so that the chains are encouraged to *coalesce*
 * The *coupling time*, $\tau$, is given by
 $$\tau \equiv \min_t\left\{X^{(1)}_t = X^{(2)}_t\right\}$$
 * The coupling is *faithful* if $X^{(1)}_t = X^{(2)}_t\quad \forall t\geq\tau$
@@ -64,9 +64,9 @@ a = \frac{\pi(x^\star)q(x)}{\pi(x)q(x^\star)}
 $$
 * This could be done by generating $U\sim U(0,1)$ and accepting if $U<a$
 * For *coupled* chains, the *same* proposed value could be used for *both* chains, and the *same* $U$ could be used to accept/reject
-* So at each iteration, the use of a common proposed value ensures that there is a finite probability of coalesense, and the use of a common $U$ ensures that any coupling will be faithful
+* So at each iteration, the use of a common proposed value ensures that there is a finite probability of coalescence, and the use of a common $U$ ensures that any coupling will be faithful
 
-## Example - normal target with cauchy proposals
+## Example - normal target with Cauchy proposals
 
 ```{r}
 set.seed(4)
@@ -250,7 +250,7 @@ $$
 
 * One of the main motivations for obtaining unbiased estimation of posterior expectations is to fix one of the issues with parallel chains MCMC
 * We would like to run many chains independently on different processors and then pool results in some way
-* In this case any bias in the chains will not "average out" across multiple processors, since there will be non-negligable bias in every chain
+* In this case any bias in the chains will not "average out" across multiple processors, since there will be non-negligible bias in every chain
 * Unbiased estimators can be safely averaged to get new unbiased estimators with reduced variance
 * However, the debiasing doesn't actually eliminate burn-in - it just corrects for it, so you still have repeated burn-in, limiting the scalability of the parallel chains approach
 
@@ -379,12 +379,23 @@ out = cmh1(
 plot(ts(out), plot.type="single", col=c(2,3), lwd=3)
 ```
 
+## Reflection maximal coupling
+
+* The particular maximal coupling strategy described (sometimes known as $\gamma$-coupling) is simple and general, but is not the only way to couple random quantities
+* This coupling has the potentially undesirable feature that conditional on not matching, the two generated values are independent
+* Ideally we would like the values generated to be correlated even when they are not identical - this would then better encourage the coalescence of the coupled chains
+* For a pair of Gaussian marginals, there is a method known as "reflection maximal coupling" which does this
+* Using this method for appropriate problems can lead to a drastic reduction in coupling times
+* See the read paper for the actual details
+
 
 ## Coupling Gibbs samplers
 
+* The technique described works for multivariate as well as univariate MH samplers
+* However, it also makes sense to want to couple Gibbs samplers and other component-wise update algorithms
+* For each component update of a Gibbs sampler, just couple the full-conditionals for the two chains
+* Once all components have coalesced, the full state of the chain will be coalesced, and the coupling of the two chains will be faithful
 
-
-## Reflection maximal coupling ???
 
 # Summary
 
