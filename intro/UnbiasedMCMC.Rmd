@@ -462,7 +462,7 @@ image(1*((arr[,,1]-arr[,,2]) == 0.0), ylab="Space",
 ```{r echo=FALSE}
 op = par(mfrow=c(2,3))
 for (i in 1:6) {
-    ##arr = car1()
+    arr = car1()
     image(1*((arr[,,1]-arr[,,2]) == 0.0), ylab="Space",
           xlab="Iteration")
 }
