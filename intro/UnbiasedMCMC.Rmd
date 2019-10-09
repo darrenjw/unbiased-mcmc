@@ -339,7 +339,7 @@ $$
 
 ---
 
-```{r size="tiny"}
+```{r}
 cmh1 = function(n, rpi0, dpi, rq, dq) {
     xm = matrix(NA, nrow=n+1, ncol=2)
     x = c(rpi0(), rpi0()); xm[1, ] = x
@@ -396,9 +396,88 @@ plot(ts(out), plot.type="single", col=c(2,3), lwd=3)
 * For each component update of a Gibbs sampler, just couple the full-conditionals for the two chains
 * Once all components have coalesced, the full state of the chain will be coalesced, and the coupling of the two chains will be faithful
 
+## Coupled Gibbs sampler for an AR(1)
+
+Consider an AR(1) process defined by
+$$
+X_t = \alpha X_{t-1} + \epsilon_t,\qquad \epsilon_t \sim N(0,\sigma^2),
+$$
+for $t=1,2,\ldots,N$, with periodic boundaries (so that $X_0\equiv X_N$ and $X_{N+1}\equiv X_1$), and stationary variance $\sigma^2/(1-\alpha^2)$. The full-conditional for each variable $X_t$ is of the form
+$$
+X_t|X_{t-1},X_{t+1} \sim N\left(\frac{\alpha}{1+\alpha^2}(X_{t-1}+X_{t+1}), \frac{\sigma^2}{1+\alpha^2} \right).
+$$
+We run two chains by cycling through each variable in turn and sampling from the coupled full conditionals. Here we use $N=200$ and $\alpha=0.99$, for $n=500$ iterations.
+
+## Coupled chains
+
+```{r, echo=FALSE}
+car1 = function(n = 500, N = 200, a = 0.99) {
+    arr = array(dim = c(n,N,2))
+    x = matrix(rnorm(2*N, 2*sqrt(1/(1-a*a))), ncol=2)
+    arr[1, , ] = x
+    w = a/(1+a*a)
+    csd = sqrt(1/(1+a*a))
+    for (i in 2:n) {
+        arr[i,1,] = rcouple(
+            function() rnorm(1, w*(arr[i-1,N,1]+arr[i-1,2,1]), csd),
+            function(xp) dnorm(xp, w*(arr[i-1,N,1]+arr[i-1,2,1]), csd),
+            function() rnorm(1, w*(arr[i-1,N,2]+arr[i-1,2,2]), csd),
+            function(xp) dnorm(xp, w*(arr[i-1,N,2]+arr[i-1,2,2]), csd)
+        )
+        for (j in 2:(N-1)) {
+            arr[i,j,] = rcouple(
+                function() rnorm(1, w*(arr[i,j-1,1]+arr[i-1,j+1,1]), csd),
+                function(xp) dnorm(xp, w*(arr[i,j-1,1]+arr[i-1,j+1,1]), csd),
+                function() rnorm(1, w*(arr[i,j-1,2]+arr[i-1,j+1,2]), csd),
+                function(xp) dnorm(xp, w*(arr[i,j-1,2]+arr[i-1,j+1,2]), csd)
+            )
+        }
+        arr[i,N,] = rcouple(
+            function() rnorm(1, w*(arr[i,N-1,1]+arr[i,1,1]), csd),
+            function(xp) dnorm(xp, w*(arr[i,N-1,1]+arr[i,1,1]), csd),
+            function() rnorm(1, w*(arr[i,N-1,2]+arr[i,1,2]), csd),
+            function(xp) dnorm(xp, w*(arr[i,N-1,2]+arr[i,1,2]), csd)
+        )
+    }
+    arr
+}
+    
+set.seed(3)
+arr = car1()
+op = par(mfrow=c(1,2))
+image(arr[,,1], main="Chain 1", xlab="Iteration", ylab="Space")
+image(arr[,,2], main="Chain 2", xlab="Iteration", ylab="Space")
+par(op)
+```
+
+## Coupled pixels
+
+```{r echo=FALSE}
+image(1*((arr[,,1]-arr[,,2]) == 0.0), ylab="Space",
+      main="Uncoupled variables in red", xlab="Iteration")
+```
+
+## Coupling behaviour
+
+```{r echo=FALSE}
+op = par(mfrow=c(2,3))
+for (i in 1:6) {
+    ##arr = car1()
+    image(1*((arr[,,1]-arr[,,2]) == 0.0), ylab="Space",
+          xlab="Iteration")
+}
+par(op)
+```
 
 # Summary
 
 ## Summary
 
-Wrap-up here...
+* Bias in MCMC output is undesirable, and is especially problematic in the context of running many parallel chains
+* We can remove the bias in estimates of expectations of the target distribution using output from a pair of coupled chains
+* Coupling can often be engineered by using a "maximal coupling" of two probability distributions
+* Techniques for coupling Metropolis-Hastings algorithms and Gibbs samplers are discussed in the read paper
+* Techniques for coupling other MCMC algorithms are discussed in an array of companion papers
+* The methods are not particularly difficult to implement, and seem to work OK on a reasonable array of problems
+* It is less clear that these methods will revolutionise parallel MCMC
+
