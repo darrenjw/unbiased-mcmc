@@ -141,6 +141,12 @@ out = cmh1(
 plot(ts(out), plot.type="single", col=c(2,3), lwd=3)
 
 
+## Coupled Gibbs
+
+
+
+
+
 
 
 
