@@ -300,10 +300,9 @@ coupled = function()
 set.seed(1)
 xm = t(sapply(1:10000, function(x) coupled()))
 ```
+## Plots
 
-## Plotting code
-
-```{r}
+```{r echo=FALSE}
 doPlot = function(xm) {
     op = par(mfrow=c(2,2))
     hist(xm[,2], 20, xlab="N(1,4)", col=2,
@@ -317,11 +316,7 @@ doPlot = function(xm) {
 		main="Second marginal")
     par(op)
 }
-```
 
-## Plots
-
-```{r}
 doPlot(xm)
 ```
 
