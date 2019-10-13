@@ -4,7 +4,7 @@
 
 ### Jacob and co-authors
 
-* Unbiased MCMC with couplings: https://arxiv.org/abs/1708.03625
+* Unbiased MCMC with couplings: https://arxiv.org/abs/1708.03625 (and RSS PDF: https://t.co/RzVeTjIjtb )
 * Unbiased HMC with couplings: https://arxiv.org/abs/1709.00404
 * Smoothing PFs with couplings: https://arxiv.org/abs/1701.02002
 * Unbiased MCMC for intractable targets: https://arxiv.org/abs/1807.08691
