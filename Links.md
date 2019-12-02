@@ -14,11 +14,12 @@
 
 ### Related ideas
 
-* Johnson: https://dx.doi.org/10.1080/01621459.1998.10474105
-* McLeish: https://arxiv.org/abs/1005.2228
-* Glynn and Rhee: https://arxiv.org/abs/1409.4302
-* Agapiou et al.: https://arxiv.org/abs/1411.7713
-* Bou-Rabee et al.: https://arxiv.org/abs/1805.00452v2
+* Glynn and Heidelberger (1991): http://web.stanford.edu/~glynn/papers/1991/GH91a.html
+* Johnson (1998): https://dx.doi.org/10.1080/01621459.1998.10474105
+* McLeish (2011): https://arxiv.org/abs/1005.2228
+* Glynn and Rhee (2014): https://arxiv.org/abs/1409.4302
+* Agapiou et al. (2014): https://arxiv.org/abs/1411.7713
+* Bou-Rabee et al. (2018): https://arxiv.org/abs/1805.00452v2
 
 ## Blog posts:
 
