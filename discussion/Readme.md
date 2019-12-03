@@ -12,7 +12,9 @@ Materials relating directly to my discussion contribution to the read paper, pos
 	* Amdhal's law for parallel chains MCMC
 	* How this helps a little but doesn't really solve problem
 * Implementation issues and how FP helps?
+* Investigate initialisation? eg. from same point
 * Example: Gibbs sampler for GMRF - animation of coupling (Scala code)
+* Example: Variable selection?
 * Example: Simple parallel tempering example - with animations? Mention relation to Bouchard-Cote stuff?
 * Example: Implementation for a general purpose MH PPL?!
 

@@ -14,6 +14,7 @@
 
 ### Related ideas
 
+* Glynn and Heidelberger (1990): https://web.stanford.edu/~glynn/papers/1990/GH90.html
 * Glynn and Heidelberger (1991): http://web.stanford.edu/~glynn/papers/1991/GH91a.html
 * Johnson (1998): https://dx.doi.org/10.1080/01621459.1998.10474105
 * Neal (1999): https://arxiv.org/abs/1711.04399
