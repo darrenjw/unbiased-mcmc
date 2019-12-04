@@ -31,6 +31,11 @@
 * https://statisfaction.wordpress.com/2017/09/06/sampling-from-a-maximal-coupling/
 * https://statisfaction.wordpress.com/2017/09/17/unbiased-hamiltonian-monte-carlo-with-couplings/
 * https://statisfaction.wordpress.com/2017/10/01/approximating-the-cut-distribution/
+* https://statisfaction.wordpress.com/2018/08/24/couplings-of-normal-variables/
+* https://statisfaction.wordpress.com/2018/08/27/final-update-on-unbiased-smoothing/
+* https://statisfaction.wordpress.com/2019/01/19/another-update-on-unbiased-smoothing/
+* https://statisfaction.wordpress.com/2019/02/05/budget-constrained-simulations/
+* https://statisfaction.wordpress.com/2019/06/05/estimating-convergence-of-markov-chains/
 * https://statisfaction.wordpress.com/2019/09/28/coding-algorithms-in-r-for-models-written-in-stan/
 * https://statisfaction.wordpress.com/2019/10/05/jrss-series-b-read-paper-and-comparison-with-other-unbiased-estimators/
 
