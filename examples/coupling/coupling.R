@@ -15,6 +15,7 @@ rcouple = function(rp, dp, rq, dq) {
         }
     }
 
+
 ## Simple Gaussian example
 coupled = function()
     rcouple(
@@ -46,7 +47,7 @@ coupled = function()
         function() rnorm(1,4,1),
         function(x) dnorm(x,4,1)
         )
-xm = t(sapply(1:1000, function(x) coupled()))
+xm = t(sapply(1:10000, function(x) coupled()))
 doPlot = function(xm) {
     op = par(mfrow=c(2,2))
     hist(xm[,2],xlab="N(4,1)",col=2, main="Marginal")
