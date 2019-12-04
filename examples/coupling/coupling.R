@@ -1,7 +1,14 @@
+############################################################
 ## coupling.R
 ## Looking at couplings of random variables
+## Simple gamma coupling and a reflection maximal coupling
+## All univariate, which is not the best case for reflection
+############################################################
 
+
+############################################################
 ## Maximal (gamma) coupling
+############################################################
 rcouple = function(rp, dp, rq, dq) {
     x = rp()
     w = runif(1,0,dp(x))
@@ -14,6 +21,7 @@ rcouple = function(rp, dp, rq, dq) {
             return(c(x,ys))
         }
     }
+############################################################
 
 
 ## Simple Gaussian example
@@ -62,15 +70,20 @@ print(summary(xm))
 print(var(xm))
 print(cor(xm)[2,1])
 
+
+############################################################
 ## Reflection maximal coupling
+############################################################
 refcouple = function(m1, m2, sd) {
     xd = rnorm(1,0,1)
     u = runif(1,0,1)
     if (u < dnorm(xd + (m1-m2)/sd)/dnorm(xd))
         c(m1 + sd*xd, m1 + sd*xd)
     else
-        c(m1 + sd*xd, m2 + -sd*xd )
+        c(m1 + sd*xd, m2 - sd*xd )
 }
+############################################################
+
 
 ## Previous example with a reflection maximal coupling
 coupled = function()
@@ -82,6 +95,7 @@ print(summary(xm))
 print(var(xm))
 print(cor(xm)[2,1])
 
+## Now an sd of 2
 coupled = function()
     refcouple(2,4,2)
 xm = t(sapply(1:10000, function(x) coupled()))
@@ -99,6 +113,7 @@ print(summary(xm))
 print(var(xm))
 print(cor(xm)[2,1])
 
+## Compare against gamma coupling
 coupled = function()
     rcouple(
         function() rnorm(1,2,2),
@@ -114,5 +129,8 @@ print(var(xm))
 print(cor(xm)[2,1])
 
 
+
+############################################################
 ## eof
+############################################################
 
