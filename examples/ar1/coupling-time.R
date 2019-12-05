@@ -20,7 +20,6 @@ ct = vector("numeric",nd)
 for (i in 1:nd) {
     arr = car1(n=n, N=N, a=a)
     dif = as.matrix(1*(arr[,,1]-arr[,,2] != 0.0))
-    image(dif)
     cc = rowSums(dif)
     ct[i] = (1:n)[cc < 0.5][1]
     message(paste(ct[i]," "), appendLF=FALSE)
@@ -35,7 +34,6 @@ rct = vector("numeric",nd)
 for (i in 1:nd) {
     arr = refcar1(n=n, N=N, a=a)
     dif = as.matrix(1*(arr[,,1]-arr[,,2] != 0.0))
-    image(dif)
     cc = rowSums(dif)
     rct[i] = (1:n)[cc < 0.5][1]
     message(paste(ct[i]," "), appendLF=FALSE)
