@@ -10,9 +10,9 @@ source("ar1.R")
 
 message("PLEASE NOTE: that with default settings, this script will take an (unnecessarily) long time to run")
 
-n = 6000 # upper bound on coupling time
-N = 25   # Length of AR(1) process
-a = 0.98 # Auto-regressive parameter
+n = 10000 # upper bound on coupling time
+N = 30   # Length of AR(1) process
+a = 0.95 # Auto-regressive parameter
 nd = 2000 # Number of coupling times to evaluate
 
 message("Start with maximal (gamma) coupling")
@@ -43,7 +43,7 @@ print(summary(rct))
 print(sd(rct, na.rm=TRUE))
 hist(rct)
 
-boxplot(list(gamma=ct,relect=rct), main="Coupling time distributions")
+boxplot(list(gamma=ct,reflect=rct), main="Coupling time distributions")
 
 ###################################################################
 ## eof
