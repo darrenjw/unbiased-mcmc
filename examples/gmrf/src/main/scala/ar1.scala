@@ -2,7 +2,7 @@
 ar1.scala
 AR(1) example
 
-*/
+ */
 
 object Ar1 {
 
