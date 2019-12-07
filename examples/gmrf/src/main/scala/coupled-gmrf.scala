@@ -54,8 +54,31 @@ object CoupledGmrf {
     pis.zipWithIndex.dropWhile(pim => min(I2BDM(pim._1.image)) < 0.5).head._2
   }
 
+  // Expects a vector of coupling times
+  def summariseTimes(times: DenseVector[Int], plot: Boolean = true): Unit = {
+    println(times)
+    val dtimes = times map (_.toDouble)
+    import breeze.stats._
+    val mav = meanAndVariance(dtimes)
+    println(mav)
+    print("Median: " + median(dtimes) + ", ")
+    println("Max: " + max(dtimes) + ", Min: " + min(dtimes))
+    if (plot) {
+      import breeze.plot._
+      val fig = Figure("Histograms")
+      fig.clear
+      val p = fig.subplot(1, 1, 0)
+      p.title = s"Histogram of coupling times for a GMRF"
+      p += hist(dtimes)
+      fig.refresh
+      fig.saveas("histogram.png")
+    }
+  }
+
+
+  // Main runner function
   def main(args: Array[String]): Unit = {
-    val m0 = DenseMatrix.tabulate(100, 100) {
+    val m0 = DenseMatrix.tabulate(50, 50) {
       case (i, j) => (Gaussian(0.0, 10.0).draw, Gaussian(0.0, 10.0).draw)
     }
     val pim0 = PImage(0, 0, BDM2I(m0))
@@ -63,18 +86,13 @@ object CoupledGmrf {
       Stream.iterate(pim0)(
         _.coflatMap(oddKernel).map(_.draw).coflatMap(evenKernel).map(_.draw)
       )
-
     def pims1 = pims.map(_.map(_._1))
     //plotFrames(pims1.take(20))
-
     def cpims = pims map (_.map { case (x1, x2) => if (x1 == x2) 1.0 else 0.0 })
     //plotFrames(cpims.take(40))
-
-    println(couplingTime(cpims))
-
-    val times = DenseVector.fill(10)(couplingTime(cpims))
-    println(times)
-
+    //println(couplingTime(cpims))
+    val times = DenseVector.fill(100)(couplingTime(cpims))
+    summariseTimes(times)
   }
 
 }
