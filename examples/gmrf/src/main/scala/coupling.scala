@@ -5,6 +5,7 @@ Functions for creating coupled random variables, coupled Metropolis-Hastings ker
 
 */
 
+
 import breeze.stats.distributions._
 
 object UnbiasedMcmc {
@@ -43,6 +44,11 @@ object UnbiasedMcmc {
     n2 = if (math.log(u) < logPi(p._2) - logPi(x._2)) p._2 else x._2
   } yield (n1,n2)
 
+}
+
+object CouplingExamples {
+
+  import UnbiasedMcmc._
 
   def couplingTest: Unit = {
     //val c = couple(Gamma(10,0.1), Gamma(10,0.1))
