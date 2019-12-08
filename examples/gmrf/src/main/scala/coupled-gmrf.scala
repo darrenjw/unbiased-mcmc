@@ -75,7 +75,6 @@ object CoupledGmrf {
     }
   }
 
-
   // Main runner function
   def main(args: Array[String]): Unit = {
     val m0 = DenseMatrix.tabulate(50, 50) {

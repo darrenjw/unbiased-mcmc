@@ -26,6 +26,7 @@ object UnbiasedMcmc {
     }
   }
 
+  // A simple (uncoupled) Metropolis kernel for target logPi
   def metKernel[T](
       q: T => ContinuousDistr[T]
   )(logPi: T => Double)(x: T): Rand[T] =
@@ -41,11 +42,22 @@ object UnbiasedMcmc {
   )(logPi: T => Double)(x: (T, T)): Rand[(T, T)] =
     for {
       p <- couple(q(x._1), q(x._2))
-      //p <- for (q1 <- q(x._1); q2 <- q(x._2)) yield (q1,q2) // uncoupled proposal
       u <- Uniform(0, 1)
       n1 = if (math.log(u) < logPi(p._1) - logPi(x._1)) p._1 else x._1
       n2 = if (math.log(u) < logPi(p._2) - logPi(x._2)) p._2 else x._2
     } yield (n1, n2)
+
+  // Monadic reflection maximal coupling of two _univariate_ Gaussians
+  def rmcouple(m1: Double, m2: Double, sig: Double): Rand[(Double, Double)] = {
+    val z = Gaussian(0, 1)
+    for {
+      xd <- z
+      u  <- Uniform(0, 1)
+      y = if (math.log(u) < z.logPdf(xd + (m1 - m2) / sig) - z.logPdf(xd))
+        (m1 + sig * xd)
+      else (m2 - sig * xd)
+    } yield (m1 + sig * xd, y)
+  }
 
 }
 
@@ -54,23 +66,38 @@ object CouplingExamples {
   import UnbiasedMcmc._
 
   def couplingTest: Unit = {
-    //val c = couple(Gamma(10,0.1), Gamma(10,0.1))
-    //val c = couple(Gamma(10,0.1), Gamma(20,0.1))
-    val c = couple(Gaussian(5, 2), Gaussian(4, 3))
-    //val c = couple(Gaussian(0,1),Gaussian(1,1))
-    //val c = couple(Uniform(0,2),Uniform(1,4))
-    val cs = c.sample(100000)
-    val x  = cs map (_._1)
-    val y  = cs map (_._2)
+    plotCoupling(couple(Gamma(10, 0.1), Gamma(10, 0.1)))
+    plotCoupling(couple(Gamma(10, 0.1), Gamma(20, 0.1)))
+    plotCoupling(couple(Gaussian(5, 2), Gaussian(4, 3)))
+    plotCoupling(couple(Gaussian(2, 2), Gaussian(4, 2)))
+    plotCoupling(rmcouple(2, 4, 2))
+    plotCoupling(couple(Uniform(0, 2), Uniform(1, 4)))
+  }
 
+  def plotCoupling(c: Rand[(Double, Double)]): Unit = {
+    val cs = c.sample(100000)
+    import breeze.linalg._
+    val x = DenseVector((cs map (_._1)).toArray)
+    val y = DenseVector((cs map (_._2)).toArray)
     import breeze.plot._
     val fig = Figure("Coupling")
     val p0  = fig.subplot(1, 3, 0)
     p0 += plot(x, y, '.')
     val p1 = fig.subplot(1, 3, 1)
-    p1 += hist(x)
+    p1 += hist(x, 30)
+    p1.ylim = (0, p1.ylim._2)
     val p2 = fig.subplot(1, 3, 2)
-    p2 += hist(y)
+    p2 += hist(y, 30)
+    p2.ylim = (0, p2.ylim._2)
+    import breeze.stats._
+    print("x: ")
+    println(meanAndVariance(x))
+    print("Median: " + median(x) + ", ")
+    println("Max: " + max(x) + ", Min: " + min(x))
+    print("y: ")
+    println(meanAndVariance(y))
+    print("Median: " + median(y) + ", ")
+    println("Max: " + max(y) + ", Min: " + min(y))
   }
 
   def metropTest: Unit = {
@@ -115,8 +142,8 @@ object CouplingExamples {
   }
 
   def main(args: Array[String]): Unit = {
-    //couplingTest
-    //metropTest
+    couplingTest
+    metropTest
     coupledMetropTest
   }
 
