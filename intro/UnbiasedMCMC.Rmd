@@ -449,7 +449,7 @@ par(op)
 
 ```{r echo=FALSE}
 image(1*((arr[,,1]-arr[,,2]) == 0.0), ylab="Space",
-      main="Uncoupled variables in red", xlab="Iteration")
+      main="Coupled variables in red", xlab="Iteration")
 ```
 
 ## Coupling behaviour
