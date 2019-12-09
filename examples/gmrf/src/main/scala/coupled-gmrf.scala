@@ -80,7 +80,7 @@ object CoupledGmrf {
 
   // Main runner function
   def main(args: Array[String]): Unit = {
-    val m0 = DenseMatrix.tabulate(500, 500) {
+    val m0 = DenseMatrix.tabulate(150, 150) {
 //    val m0 = DenseMatrix.tabulate(50, 50) {
       case (i, j) => (Gaussian(0.0, 10.0).draw, Gaussian(0.0, 10.0).draw)
     }
