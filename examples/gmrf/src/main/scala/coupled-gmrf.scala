@@ -80,8 +80,8 @@ object CoupledGmrf {
 
   // Main runner function
   def main(args: Array[String]): Unit = {
-    val m0 = DenseMatrix.tabulate(150, 150) {
-//    val m0 = DenseMatrix.tabulate(50, 50) {
+    // val m0 = DenseMatrix.tabulate(150, 150) {
+    val m0 = DenseMatrix.tabulate(50, 50) {
       case (i, j) => (Gaussian(0.0, 10.0).draw, Gaussian(0.0, 10.0).draw)
     }
     val pim0 = PImage(0, 0, BDM2I(m0))
@@ -91,7 +91,7 @@ object CoupledGmrf {
       )
     def pims1 = pims.map(_.map(_._1)) // First marginal component
     //plotFrames(pims1.take(50))
-    //def cpims = pims map (_.map { case (x1, x2) => if (x1 == x2) 1.0 else 0.0 })
+    def cpims = pims map (_.map { case (x1, x2) => if (x1 == x2) 1.0 else 0.0 })
     //plotFrames(cpims.take(150)) // Stream of coupled pixels
     //println(couplingTime(cpims)) // A single coupling time
     println("Computing coupling time distribution - this could take a while...")
