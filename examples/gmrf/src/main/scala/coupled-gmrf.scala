@@ -80,8 +80,8 @@ object CoupledGmrf {
 
   // Main runner function
   def main(args: Array[String]): Unit = {
-    // val m0 = DenseMatrix.tabulate(150, 150) {
-    val m0 = DenseMatrix.tabulate(50, 50) {
+    val m0 = DenseMatrix.tabulate(150, 150) {
+    // val m0 = DenseMatrix.tabulate(50, 50) {
       case (i, j) => (Gaussian(0.0, 10.0).draw, Gaussian(0.0, 10.0).draw)
     }
     val pim0 = PImage(0, 0, BDM2I(m0))
@@ -95,7 +95,7 @@ object CoupledGmrf {
     //plotFrames(cpims.take(150)) // Stream of coupled pixels
     //println(couplingTime(cpims)) // A single coupling time
     println("Computing coupling time distribution - this could take a while...")
-    val times = DenseVector.fill(100)(couplingTime(cpims))
+    val times = DenseVector.fill(1000)(couplingTime(cpims))
     summariseTimes(times)
   }
 
