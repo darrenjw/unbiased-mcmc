@@ -131,6 +131,7 @@ We run two chains by cycling through each variable in turn and sampling from the
 X_{i,j}|\cdot \sim N\left(\frac{\alpha}{4}(X_{i-1,j}+X_{i+1,j}+X_{i,j-1}+X_{i,j+1}), \sigma^2 \right).
 \]
 \item Exact simulation is possible, but here we run two chains by cycling through each pixel in turn and sample from the coupled full conditionals. Here we use a $150\times 150$ grid (22.5k variables) with  $\alpha=0.99$, and $\sigma^2=1$, and run chains until they couple in order to study the coupling time distribution (for 1k replicates).
+  \item Note that the coupling times become \alert{very} bad in the improper $\alpha=1$ case.
   \end{itemize}
 }
 
