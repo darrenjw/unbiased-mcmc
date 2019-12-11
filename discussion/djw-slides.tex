@@ -79,7 +79,7 @@ H_{k:m}(X,Y) &= \frac{1}{m-k+1}\sum_{t=k}^m h(X_t)\\
 \item
   Just the regular MCMC estimate with a correction term that terminates once the chains have coupled
 \item Coupling depends on the (arbitrary) proposed coupling mechanism as well as the mixing properties of the chain
-\item Possible to engineer early coupling (via initial conditions and MH kernel, for example), but this might be a dangerous strategy (see multimodal example in paper)
+\item Possible to engineer early coupling (via initial conditions and MH kernel, for example), but this might be a dangerous strategy (see multi-modal example in paper)
 \end{itemize}
 }
 
@@ -147,7 +147,12 @@ X_{i,j}|\cdot \sim N\left(\frac{\alpha}{4}(X_{i-1,j}+X_{i+1,j}+X_{i,j-1}+X_{i,j+
 
 \frame{
   \frametitle{Coupling time distribution}
-
+\centerline{\includegraphics[height=0.5\textheight]{figs/histogram-150-gmc}
+  \includegraphics[height=0.4\textheight]{figs/histogram-150-rmc}}
+\begin{itemize}
+\item Histograms of coupling time distributions (for 1k replicates), based on $\gamma$-maximal coupling (left) and reflection maximal coupling (right)
+  \item Very similar profiles, and execution times, with the reflection coupling being slightly faster in terms of CPU time
+  \end{itemize}
 }
 
 
@@ -158,7 +163,7 @@ X_{i,j}|\cdot \sim N\left(\frac{\alpha}{4}(X_{i-1,j}+X_{i+1,j}+X_{i,j-1}+X_{i,j+
     \item Using the standard \alert{maximal coupling}, the mean coupling time is around 272, and median around 260. The maximum observed coupling time is 656.
     \item Using the \alert{reflection maximal coupling}, the mean coupling time is around 268 and the median is around 257. The maximum observed coupling time is 712.
     \item This is consistent with other experiments I've done. For univariate kernels, the reflection coupling is no worse than the standard ($\gamma$) coupling, and sometimes slightly better
-    \item The reflection coupling is really designed for high dimensional Gaussian kernels, where it encourages strong positive correlation between generated values
+    \item The reflection coupling is really designed for high dimensional Gaussian kernels, where it encourages positive correlation between generated values
       \item In the univariate case, it's not very clear why the reflection coupling isn't slightly worse than the standard coupling
   \end{itemize}
   }
@@ -180,15 +185,16 @@ X_{i,j}|\cdot \sim N\left(\frac{\alpha}{4}(X_{i-1,j}+X_{i+1,j}+X_{i,j-1}+X_{i,j+
   \item The paper recommends choosing $k$ as a high quantile of the coupling time distribution, and $m$ a multiple of~$k$
   \item This is very consistent with the approach that would be taken for a (biased, uncoupled) parallel chains approach, with $k$ playing the role of ``burn-in''
   \item It might be ``dangerous'' to choose $k$ this way if early coupling has been (artificially) engineered
-  \item In any case, any non-zero $k$ limits speed-up of parallel coupled chains relative to ``one long run'', via Amdahl's law for parallel chains MCMC (Wilkinson, 2005):
-
-    EQUATION HERE
+  \item In any case, any non-zero $k$ limits speed-up of parallel coupled chains relative to ``one long run'', via \alert{Amdahl's law} for parallel chains MCMC (Wilkinson, 2005):
+    \[
+\text{SpeedUp}(N) = \frac{b+n}{b+\frac{n}{N}} \overset{N}{\underset{\infty}{\longrightarrow}} \frac{b+n}{b},
+    \]
+    for burn-in $b$ and monitoring run $n$ on $N$ processors (eg. asymptotic limit of 10 for $n=9b$).
     \end{itemize}
 }
 
-
 \frame{
-  \frametitle{In conclusion}
+  \frametitle{Conclusion}
   \begin{itemize}
   \item The method proposed in the paper is often straightforward to implement, and seems to work well on a range of problems
   \item It is potentially useful in the context of parallelisation of MCMC algorithms, since averaging unbiased estimators is relatively ``safe'', but it is not clear that it fundamentally solves the ``parallel MCMC'' problem, since some kind of ``burn-in'' must still be repeated for every pair of chains
@@ -196,7 +202,6 @@ X_{i,j}|\cdot \sim N\left(\frac{\alpha}{4}(X_{i-1,j}+X_{i+1,j}+X_{i,j-1}+X_{i,j+
   \item Overall, an interesting and discussable contribution to the literature, so \alert{it gives me great pleasure to propose the vote of thanks!}
   \end{itemize}
 My materials: \alert{\url{https://github.com/darrenjw/unbiased-mcmc}}
-  
 }
 
 
