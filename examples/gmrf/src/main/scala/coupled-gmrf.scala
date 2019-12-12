@@ -90,9 +90,9 @@ object CoupledGmrf {
         _.coflatMap(oddKernel).map(_.draw).coflatMap(evenKernel).map(_.draw)
       )
     def pims1 = pims.map(_.map(_._1)) // First marginal component
-    //plotFrames(pims1.take(50))
+    plotFrames(pims1.take(10))
     def cpims = pims map (_.map { case (x1, x2) => if (x1 == x2) 1.0 else 0.0 })
-    //plotFrames(cpims.take(150)) // Stream of coupled pixels
+    plotFrames(cpims.take(20)) // Stream of coupled pixels
     //println(couplingTime(cpims)) // A single coupling time
     println("Computing coupling time distribution - this could take a while...")
     val times = DenseVector.fill(1000)(couplingTime(cpims))
