@@ -41,9 +41,11 @@
 
 ### Other blog posts
 
+* [My post](https://darrenjw.wordpress.com/2019/12/12/unbiased-mcmc-with-couplings/) about the Read Paper meeting
 * [X'ian's Og](https://xianblog.wordpress.com/)
     * https://xianblog.wordpress.com/2017/08/25/unbiased-mcmc/
     * https://xianblog.wordpress.com/2019/10/25/unbiased-hamiltonian-monte-carlo-with-couplings/
+	* https://xianblog.wordpress.com/2019/12/10/unbiased-mcmc-discussed-at-the-rss-tomorrow-night/
 * Colin Carroll's blog series: https://colcarroll.github.io/couplings/
 
 ## Code:
