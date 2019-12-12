@@ -10,4 +10,23 @@ I haven't yet finalised my written discussion contribution, but the slides I pre
 
 The repo also contains a few stand-alone [code examples](https://github.com/darrenjw/unbiased-mcmc/tree/master/examples). There are some simple tutorial examples in R (largely derived from my tutorial introduction), including implementation of (univariate) [independent and reflection maximal couplings](https://github.com/darrenjw/unbiased-mcmc/blob/master/examples/coupling/), and a [coupled AR(1) process](https://github.com/darrenjw/unbiased-mcmc/tree/master/examples/ar1) example.
 
-The more substantial example concerns a [coupled Gibbs sampler for a GMRF](https://github.com/darrenjw/unbiased-mcmc/tree/master/examples/gmrf). This example is written in the Scala programming language. There are a couple of notable features of this implementation. First, the code illustrates [monadic](https://darrenjw.wordpress.com/2016/04/15/first-steps-with-monads-in-scala/) coupling of probability distributions, based on the `Rand` type in the [Breeze scientific library](https://darrenjw.wordpress.com/2013/12/30/brief-introduction-to-scala-and-breeze-for-statistical-computing/). This provides an elegant way to max couple arbitrary (continuous) random variables, and to create coupled Metropolis(-Hastings) kernels. The other notable feature is the use of a [parallel comonadic image type](https://darrenjw.wordpress.com/2018/01/22/comonads-for-scientific-and-statistical-computing-in-scala/) for parallel Gibbs sampling of the GMRF, producing a (lazy) `Stream` of coupled MCMC samples. 
+The more substantial example concerns a [coupled Gibbs sampler for a GMRF](https://github.com/darrenjw/unbiased-mcmc/tree/master/examples/gmrf). This example is written in the Scala programming language. There are a couple of notable features of this implementation. First, the code illustrates [monadic](https://darrenjw.wordpress.com/2016/04/15/first-steps-with-monads-in-scala/) coupling of probability distributions, based on the `Rand` type in the [Breeze scientific library](https://darrenjw.wordpress.com/2013/12/30/brief-introduction-to-scala-and-breeze-for-statistical-computing/). This provides an elegant way to max couple arbitrary (continuous) random variables, and to create coupled Metropolis(-Hastings) kernels. For example, a coupling of two distributions can be constructed as
+```scala
+  def couple[T](p: ContinuousDistr[T], q: ContinuousDistr[T]): Rand[(T, T)] = {
+    def ys: Rand[T] =
+      for {
+        y  <- q
+        w  <- Uniform(0, 1)
+        ay <- if (math.log(w) > p.logPdf(y) - q.logPdf(y)) Rand.always(y) else ys
+      } yield ay
+    val pair = for {
+      x <- p
+      w <- Uniform(0, 1)
+    } yield (math.log(w) <= q.logPdf(x) - p.logPdf(x), x)
+    pair flatMap {
+      case (b, x) => if (b) Rand.always((x, x)) else (ys map (y => (x, y)))
+    }
+  }
+```
+and then `draws` can be sampled from the resulting `Rand[(T, T)]` polymorphic type as required. Incidentally, this also illustrates how to construct an independent maximal coupling without evaluating any raw likelihoods.
+The other notable feature of the code is the use of a [parallel comonadic image type](https://darrenjw.wordpress.com/2018/01/22/comonads-for-scientific-and-statistical-computing-in-scala/) for parallel Gibbs sampling of the GMRF, producing a (lazy) `Stream` of coupled MCMC samples. 
