@@ -14,13 +14,13 @@ object UnbiasedMcmc {
     def ys: Rand[T] =
       for {
         y  <- q
-        w  <- Uniform(0, q.pdf(y))
-        ay <- if (w > p.pdf(y)) Rand.always(y) else ys
+        w  <- Uniform(0, 1)
+        ay <- if (math.log(w) > p.logPdf(y) - q.logPdf(y)) Rand.always(y) else ys
       } yield ay // TODO: use tailRecM to make tail recursive
     val pair = for {
       x <- p
-      w <- Uniform(0, p.pdf(x))
-    } yield (w <= q.pdf(x), x)
+      w <- Uniform(0, 1)
+    } yield (math.log(w) <= q.logPdf(x) - p.logPdf(x), x)
     pair flatMap {
       case (b, x) => if (b) Rand.always((x, x)) else (ys map (y => (x, y)))
     }

@@ -23,8 +23,8 @@ object CoupledGmrf {
     val sum = pi.up.extract |+| pi.down.extract |+| pi.left.extract |+|
       pi.right.extract
     val mean = (sum._1 / 4.0, sum._2 / 4.0)
-    //couple(Gaussian(alpha * mean._1, sigma), Gaussian(alpha * mean._2, sigma))
-    rmcouple(alpha * mean._1, alpha * mean._2, sigma)
+    couple(Gaussian(alpha * mean._1, sigma), Gaussian(alpha * mean._2, sigma))
+    //rmcouple(alpha * mean._1, alpha * mean._2, sigma)
   }
 
   def oddKernel(pi: PImage[(Double, Double)]): Rand[(Double, Double)] =
