@@ -49,50 +49,17 @@ col, set,start,end,deltat,zip},
 
 \maketitle
 
-\subsection{Overview}
+The authors are to be congratulated for this interesting and useful contribution to the Markov chain Monte Carlo (MCMC) literature. Since in general we cannot initialise an MCMC chain with an exact sample from the target, we rely on asymptotic convergence to equilibrium, but diagnosing ``burn in'' and ``convergence'' is challenging.
+The method outlined in the paper does not attempt to solve the difficult ``exact sampling'' problem, but instead provides a method for removing the bias from any estimates that are produced from the algorithm output, using a pair of coupled chains.
+The approach is quite general, and can potentially be applied to many different kinds of MCMC algorithms --- this paper concentrates on Metropolis--Hastings and Gibbs sampling, but there are several related papers exploring applications to other MCMC schemes. 
 
-The authors are to be congratulated for this interesting contribution to the MCMC literature. XXX
-Since in general we cannot initialise an MCMC chain with an exact sample from the target, we rely on asymptotic convergence to equilibrium, but diagnosing ``burn in'' and ``convergence'' is difficult
-The method outlined in the read paper does not solve the ``exact sampling'' problem, but instead provides a method for removing the bias from any estimates that are produced from the algorithm output, using a pair of coupled chains
-The approach is quite general, and can potentially be applied to many different kinds of MCMC algorithms --- this paper concentrates on MH and Gibbs sampling (so I will, too), but there are a bunch of related papers exploring applications to other MCMC schemes
+It is important to keep in mind that coupling of the chains and convergence to equilibrium are different. Practical application of the method relies on the
+time-averaged estimator (equation 2.1 in the paper).
+This is just the regular MCMC estimate with a correction term that terminates once the chains have coupled. Choosing $k$ (the ``burn-in'') to be a high quantile of the coupling-time distribution will ensure that most estimates contain no correction at all. But since $k$ represents ``wasted'' computation, it seems desirable to encourage the chains to couple rapidly. Although it is possible to engineer early coupling (via identical initial conditions and low-acceptance rate Metropolis--Hastings kernel, for example), this might be a dangerous strategy (see example 5.1 in the paper). When the correction term is present, it can sometimes be large, so developing a better understanding the distributional properties of the correction term is likely to be useful.
 
-
-
-\subsection{Coupled Metropolis chains (with offset of 1)}
-
-\centerline{\includegraphics[height=5cm]{figs/coupled-mh}}
-
-
-\subsection{Coupling versus convergence}
-\begin{itemize}
-\item Time-averaged estimator:
-\begin{align*}
-H_{k:m}(X,Y) &= \frac{1}{m-k+1}\sum_{t=k}^m h(X_t)\\
-&\mbox{}\qquad +\sum_{t=k+1}^{\tau-1}\min\left(1,\frac{t-k}{m-k+1}\right)\{h(X_t)-h(Y_{t-1})\}
-\\
-&\equiv \text{MCMC}_{k:m} + \text{BC}_{k:m}
-\end{align*}
-\item
-  Just the regular MCMC estimate with a correction term that terminates once the chains have coupled
-\item Coupling depends on the (arbitrary) proposed coupling mechanism as well as the mixing properties of the chain
-\item Possible to engineer early coupling (via initial conditions and MH kernel, for example), but this might be a dangerous strategy (see multi-modal example in paper)
-\end{itemize}
-
-
-
-\subsection{Coupling Gibbs samplers}
-\begin{itemize}
-\item The technique for coupling MH kernels works for multivariate as well as univariate samplers, though reflection maximal coupling works much better than a simple $\gamma$-maximal coupling in high dimensions
-\item However, it also makes sense to want to couple Gibbs samplers and other component-wise update algorithms
-\item For each component update of a Gibbs sampler, just couple the full-conditionals for the two chains
-\item Once all components have coalesced, the full state of the chain will be coalesced, and the coupling of the two chains will be faithful
-  \item Little theory providing reassurance that this will happen in reasonable time, but seems to work empirically
-\end{itemize}
-
+The technique proposed for coupling Metropolis--Hastings kernels works for multivariate as well as univariate samplers, though reflection maximal coupling works much better than a simple independent maximal coupling in high dimensions. However, it also makes sense to want to couple Gibbs samplers and other component-wise update algorithms. The paper proposes that for each component update of a Gibbs sampler, the full-conditionals for the two chains should be coupled. It is clear that once all components have coalesced, the full state of the chain will match, and the coupling of the two chains will be faithful. There is little theory providing reassurance that this will happen in reasonable time for challenging problems, though it does seem to work reasonably well, empirically.
   
-
-\subsection{Coupled Gibbs sampler for an AR(1)}
-Consider an AR(1) process defined by
+Consider a linear Gaussian AR(1) process defined by
 $$
 X_t = \alpha X_{t-1} + \epsilon_t,\qquad \epsilon_t \sim N(0,\sigma^2),
 $$
@@ -100,101 +67,44 @@ for $t=1,2,\ldots,N$, with periodic boundaries (so that $X_0\equiv X_N$ and $X_{
 $$
 X_t|X_{t-1},X_{t+1} \sim N\left(\frac{\alpha}{1+\alpha^2}(X_{t-1}+X_{t+1}), \frac{\sigma^2}{1+\alpha^2} \right).
 $$
-We run two chains by cycling through each variable in turn and sampling from the coupled full conditionals. Here we use $N=200$ and $\alpha=0.99$, for $n=500$ iterations.
+We can run two chains by cycling through each variable in turn and sampling from the coupled full conditionals. Here we use $N=200$ and $\alpha=0.99$, for $n=500$ iterations. By studying the coupling of variables in the Gibbs sampler, we see that the coupling of variables follows a stochastic process, somewhat reminiscent of the annealing of a 1-d Ising model. We also see that coupling is not always rapid.
 
+\textbf{TODO: Coupling time distribution and summary stats}
 
+\begin{figure}
+  \centerline{
+    \includegraphics[height=5cm]{figs/ar1-chains}
+    \qquad
+    \includegraphics[height=5cm]{figs/ar1-coupled-1}
+    \qquad
+  \includegraphics[height=5cm]{figs/ar1-coupled-6}
+  }
+\caption{Coupled AR(1) chains (left) and plot showing the coupled AR(1) variables (middle) and for six additional replicates (right). Two of the six replicates failed to couple within 500 iterations. \textbf{TODO: grayscale plots?}}
+\end{figure}
 
-  \subsection{Coupled AR(1) chains}
-\centerline{\includegraphics[height=5cm]{figs/ar1-chains}}
+For a higher-dimensional example, a Gaussian Markov random field (GMRF) was also considered, with qualitatively similar results.
 
-
-
-  \subsection{Coupled AR(1) variables}
-\centerline{\includegraphics[height=5cm]{figs/ar1-coupled-1}}
-
-
-
-  \subsection{Coupling behaviour for pairs of AR(1) chains}
-\centerline{\includegraphics[height=5cm]{figs/ar1-coupled-6}}
-
-
-
-
-  \subsection{Gibbs sampler for a GMRF}
-  \begin{itemize}
-  \item For a more challenging/interesting example, consider a Gaussian Markov random field (on a torus) with full-conditionals
-    \[
-X_{i,j}|\cdot \sim N\left(\frac{\alpha}{4}(X_{i-1,j}+X_{i+1,j}+X_{i,j-1}+X_{i,j+1}), \sigma^2 \right).
-\]
-\item Exact simulation is possible, but here we run two chains by cycling through each pixel in turn and sample from the coupled full conditionals. Here we use a $150\times 150$ grid (22.5k variables) with  $\alpha=0.99$, and $\sigma^2=1$, and run chains until they couple in order to study the coupling time distribution (for 1k replicates).
-  \item Note that the coupling times become \emph{very} bad in the improper $\alpha=1$ case.
-  \end{itemize}
-
-
-  \subsection{Gibbs sampler for a GMRF}
-    \movie{\includegraphics[height=5cm]{figs/gmrf-frame}}{gmrf-sim.mp4}
-
-
-  \subsection{Coupling of pixels for a GMRF}
-    \movie{\includegraphics[height=5cm]{figs/gmrf-frame-c}}{gmrf-coupling.mp4}
-
-
-  \subsection{Coupling time distribution}
-\centerline{\includegraphics[height=5cm]{figs/histogram-150-gmc}
-  \includegraphics[height=5cm]{figs/histogram-150-rmc}}
-\begin{itemize}
-\item Histograms of coupling time distributions (for 1k replicates), based on $\gamma$-maximal coupling (left) and reflection maximal coupling (right)
-  \item Very similar profiles, and execution times, with the reflection coupling being slightly faster in terms of CPU time
-  \end{itemize}
-
-
-
-
-
-  \subsection{Coupling time distribution}
-  \begin{itemize}
-    \item Using the standard \emph{maximal coupling}, the mean coupling time is around 272, and median around 260. The maximum observed coupling time is 656.
-    \item Using the \emph{reflection maximal coupling}, the mean coupling time is around 268 and the median is around 257. The maximum observed coupling time is 712.
-    \item This is consistent with other experiments I've done. For univariate kernels, the reflection coupling is no worse than the standard ($\gamma$) coupling, and sometimes slightly better
-    \item The reflection coupling is really designed for high dimensional Gaussian kernels, where it encourages positive correlation between generated values
-      \item In the univariate case, it's not immediately obvious that the reflection coupling should be better than the standard coupling
-  \end{itemize}
-
-
-
-\subsection{Parallel chains}
-\begin{itemize}
-\item One of the main motivations for obtaining unbiased estimation of posterior expectations is to fix one of the issues with parallel chains MCMC
-\item We would like to run many chains independently on different processors and then pool results in some way
-\item In this case any bias in the chains will not ``average out'' across multiple processors, since there will be non-negligible bias in every chain
-\item Unbiased estimators can be safely averaged to get new unbiased estimators with reduced variance
-\item However, the debiasing doesn't actually eliminate burn-in - it just corrects for it, so you still have repeated burn-in, limiting the scalability of the parallel chains approach
-\end{itemize}
-
-
-
-  \subsection{Using coupled chains in parallel}
-  \begin{itemize}
-  \item The paper recommends choosing $k$ as a high quantile of the coupling time distribution, and $m$ a multiple of~$k$
-  \item This is very consistent with the approach that would be taken for a (biased, uncoupled) parallel chains approach, with $k$ playing the role of ``burn-in''
-  \item It might be ``dangerous'' to choose $k$ this way if early coupling has been (artificially) engineered
-  \item In any case, any non-zero $k$ limits speed-up of parallel coupled chains relative to ``one long run'', via \emph{Amdahl's law} for parallel chains MCMC (Wilkinson, 2005):
+One of the main motivations for obtaining unbiased estimation of posterior expectations is to fix one of the issues with parallel chains MCMC.
+We would like to run many chains independently on different processors and then pool results in some way.
+In this case any bias in the chains will not ``average out'' across multiple processors, since there will be non-negligible bias in every chain.
+Unbiased estimators can be safely averaged to get new unbiased estimators with reduced variance.
+However, the debiasing doesn't actually eliminate burn-in --- it just corrects for it, so there is still repeated burn-in, limiting the scalability of the parallel chains approach. The paper recommends choosing $k$ as a high quantile of the coupling time distribution, and $m$ a multiple of~$k$. This is very consistent with the approach that would be taken for a (biased, uncoupled) parallel chains approach, with $k$ playing the role of burn-in. As previously discussed, it might be dangerous to choose $k$ this way if early coupling has been (artificially) engineered, but in any case, any non-zero $k$ limits speed-up of parallel coupled chains relative to one long run, via \emph{Amdahl's law} for parallel chains MCMC (Wilkinson, 2005):
     \[
 \text{SpeedUp}(N) = \frac{b+n}{b+\frac{n}{N}} \overset{N}{\underset{\infty}{\longrightarrow}} \frac{b+n}{b},
     \]
-    for burn-in $b$ and monitoring run $n$ on $N$ processors (eg. asymptotic limit of 10 for $n=9b$).
-    \end{itemize}
+    for burn-in $b$ and monitoring run $n$ on $N$ processors (eg. asymptotic limit of 10 for $n=9b$). This suggests that parallel chains may be useful in the context of a small number of available processors ($\sim 10^1$), but possibly an increasingly inefficient proposition for large numbers of processors ($>\sim 10^{2}$). It is not clear that the situation is qualitatively different for unbiased MCMC.
 
+  \subsection*{Conclusion}
+ The method proposed in the paper is often straightforward to implement and seems to work on a broad range of samplers.
+It is potentially useful in the context of parallelisation of MCMC algorithms, since averaging unbiased estimators is relatively safe, but it is not clear that it fundamentally solves parallel MCMC, since some kind of burn-in must still be repeated for every pair of chains.
+Many open questions remain regarding the co-development of MCMC and coupling algorithms for overall efficiency.
+Overall, this represents an interesting and thought-provoking contribution to the literature, and so it gives me great pleasure to propose the vote of thanks.
 
+  \section*{References}
 
-  \subsection{Conclusion}
-  \begin{itemize}
-  \item The method proposed in the paper is often straightforward to implement, and seems to work well on a range of problems
-  \item It is potentially useful in the context of parallelisation of MCMC algorithms, since averaging unbiased estimators is relatively ``safe'', but it is not clear that it fundamentally solves the ``parallel MCMC'' problem, since some kind of ``burn-in'' must still be repeated for every pair of chains
-  \item Many open questions regarding the co-development of MCMC and coupling algorithms for overall efficiency
-  \item Overall, an interesting and discussable contribution to the literature, so \emph{it gives me great pleasure to propose the vote of thanks!}
-  \end{itemize}
-
-
+  \begin{description}
+\item Wilkinson, D. J. (2005) Parallel Bayesian Computation, Chapter 16 in E. J. Kontoghiorghes (ed.) Handbook of Parallel Computing and Statistics, Marcel Dekker/CRC Press, 481-512.
+    \end{description}
+  
 
 \end{document}
