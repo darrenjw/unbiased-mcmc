@@ -176,21 +176,25 @@ car1 = function(n = 500, N = 200, a = 0.99) {
     
 set.seed(3)
 arr = car1()
+pdf("coupled-chains.pdf")
 op = par(mfrow=c(1,2))
-image(arr[,,1], main="Chain 1", xlab="Iteration")
-image(arr[,,2], main="Chain 2", xlab="Iteration")
+image(arr[,,1], main="Chain 1", xlab="Iteration",col=gray.colors(256))
+image(arr[,,2], main="Chain 2", xlab="Iteration",col=gray.colors(256))
 par(op)
+dev.off()
+pdf("uncoupled.pdf")
 image(1*((arr[,,1]-arr[,,2]) == 0.0),
-      main="Uncoupled variables in red", xlab="Iteration")
-
+      main="Uncoupled variables", xlab="Iteration",col=gray.colors(2))
+dev.off()
+pdf("uncoupled6.pdf")
 op = par(mfrow=c(2,3))
 for (i in 1:6) {
     arr = car1()
-    image(1*((arr[,,1]-arr[,,2]) == 0.0), ylab="Space",
-          main="Uncoupled variables in red", xlab="Iteration")    
+    image(1*((arr[,,1]-arr[,,2]) == 0.0), ylab="Space / time",
+          main=paste("Replicate",i), xlab="Iteration",col=gray.colors(2))    
 }
 par(op)
-
+dev.off()
 
 
 
