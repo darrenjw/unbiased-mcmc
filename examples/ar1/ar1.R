@@ -15,7 +15,7 @@ source("../coupling/coupling.R")
 ####################################################################
 car1 = function(n = 500, N = 200, a = 0.99) {
     arr = array(dim = c(n,N,2))
-    x = matrix(rnorm(2*N, 2*sqrt(1/(1-a*a))), ncol=2)
+    x = matrix(rnorm(2*N, 0, sqrt(1/(1-a*a))), ncol=2)
     arr[1, , ] = x
     w = a/(1+a*a)
     csd = sqrt(1/(1+a*a))
@@ -50,7 +50,7 @@ car1 = function(n = 500, N = 200, a = 0.99) {
 ####################################################################
 refcar1 = function(n = 500, N = 200, a = 0.99) {
     arr = array(dim = c(n,N,2))
-    x = matrix(rnorm(2*N, 2*sqrt(1/(1-a*a))), ncol=2)
+    x = matrix(rnorm(2*N, 0, sqrt(1/(1-a*a))), ncol=2)
     arr[1, , ] = x
     w = a/(1+a*a)
     csd = sqrt(1/(1+a*a))
