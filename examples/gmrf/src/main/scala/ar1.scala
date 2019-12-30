@@ -15,7 +15,10 @@ object CoupledAr1 {
   import cats._
   import cats.implicits._
 
+  val N = 200
   val alpha = 0.99
+  //val N = 30
+  //val alpha = 0.95
   val sigma = 1.0
 
   val weight = alpha/(1.0+alpha*alpha)
@@ -61,7 +64,7 @@ object CoupledAr1 {
   // Main runner function
   def main(args: Array[String]): Unit = {
     val ssd = sigma/math.sqrt(1.0-alpha*alpha)
-    def v0 = Vector.fill(200)((Gaussian(0.0,ssd).draw, Gaussian(0.0,ssd).draw))
+    def v0 = Vector.fill(N)((Gaussian(0.0,ssd).draw, Gaussian(0.0,ssd).draw))
     def pv0 = PVec(0, v0.par)
     def pvs =
       Stream.iterate(pv0)(
