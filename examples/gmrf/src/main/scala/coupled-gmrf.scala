@@ -80,11 +80,11 @@ object CoupledGmrf {
 
   // Main runner function
   def main(args: Array[String]): Unit = {
-    val m0 = DenseMatrix.tabulate(150, 150) {
+    def m0 = DenseMatrix.tabulate(150, 150) {
     // val m0 = DenseMatrix.tabulate(50, 50) {
       case (i, j) => (Gaussian(0.0, 10.0).draw, Gaussian(0.0, 10.0).draw)
     }
-    val pim0 = PImage(0, 0, BDM2I(m0))
+    def pim0 = PImage(0, 0, BDM2I(m0))
     def pims =
       Stream.iterate(pim0)(
         _.coflatMap(oddKernel).map(_.draw).coflatMap(evenKernel).map(_.draw)

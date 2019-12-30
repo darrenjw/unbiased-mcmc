@@ -54,6 +54,16 @@ case class PImage[T](x: Int, y: Int, image: Image[T]) {
   }
 }
 
+// Pointed Vector for 1d problems
+case class PVec[T](t: Int, v: ParVector[T]) {
+  def extract: T = v(t)
+  def map[S](f: T => S): PVec[S] = PVec(t, v map f)
+  def coflatMap[S](f: PVec[T] => S): PVec[S] =
+    PVec(t,(0 until v.length).toVector.par.map(i => f(PVec(i,v))))
+  def left: PVec[T] = PVec(if (t > 0) t-1 else v.length-1, v)
+  def right: PVec[T] = PVec(if (t < v.length-1) t+1 else 0, v)
+}
+
 object PImageUtils {
 
   // Helpers for packing and unpacking
@@ -63,14 +73,21 @@ object PImageUtils {
   def I2BDM(im: Image[Double]): DenseMatrix[Double] =
     new DenseMatrix(im.h, im.w, im.data.toArray)
 
-  // Provide evidence to Cats that PImage is a Comonad (not strictly needed)
   import cats._
   import cats.implicits._
+  // Provide evidence to Cats that PImage is a Comonad (not strictly needed)
   implicit val pimageComonad = new Comonad[PImage] {
     def extract[A](wa: PImage[A]) = wa.extract
     def coflatMap[A, B](wa: PImage[A])(f: PImage[A] => B): PImage[B] =
       wa.coflatMap(f)
     def map[A, B](wa: PImage[A])(f: A => B): PImage[B] = wa.map(f)
+  }
+  // Provide evidence to Cats that PVec is a Comonad (not strictly needed)
+  implicit val pvecComonad = new Comonad[PVec] {
+    def extract[A](wa: PVec[A]) = wa.extract
+    def coflatMap[A, B](wa: PVec[A])(f: PVec[A] => B): PVec[B] =
+      wa.coflatMap(f)
+    def map[A, B](wa: PVec[A])(f: A => B): PVec[B] = wa.map(f)
   }
 
 }
