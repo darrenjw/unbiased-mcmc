@@ -8,3 +8,10 @@ Just typing `sbt run` from *this* directory should build and run the project.
 
 The code is in [./src/main/scala/](src/main/scala/).
 
+There are a few different programs you can run:
+
+1. CoupledAr1 - coupling time distribution for a Gibbs sampler of a linear Gaussian AR(1) process
+2. CoupledGmrf - coupling time distribution for a Gibbs sampler of a GMRF
+3. CouplingExamples - some simple coupling examples
+4. Gmrf - just a simple uncoupled simulation of a GMRF, to illustrate the comonadic approach to Gibbs sampling
+
