@@ -10,7 +10,7 @@ My resources relating to the paper "Unbiased MCMC with couplings" (and related p
 * [Discussion](discussion/) - my discussion contribution delivered at the paper reading, proposing the vote of thanks (both slides and written discussion)
 * [Examples](examples/) - examples in both R and Scala to illustrate the ideas (coupling Gibbs samplers for an AR(1) process and a GMRF)
 
-Also note that there is a [video](https://www.youtube.com/watch?v=ohu8DJ1qDb0) recording of the meeting.
+The [published paper](https://doi.org/10.1111/rssb.12336). Also note that there is a [video](https://www.youtube.com/watch?v=ohu8DJ1qDb0) recording of the meeting.
 
 #### eof
 
